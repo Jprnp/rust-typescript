@@ -1,3 +1,5 @@
-let myList = [1, 2, 3];
-myList = myList.map((e) => e + 1);
-console.log(myList);
+const fs = require('fs');
+
+let filePath = process.cwd();
+filePath = filePath + '/lines.txt';
+fs.readFileSync(filePath).toString().split('\n').forEach((line: string) => console.log(line));
