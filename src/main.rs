@@ -1,21 +1,20 @@
 fn main() {
-    println!("{:?}", practice(vec![1, 2, 3], 1));
-    println!("{:?}", practice(vec![1, 2, 3], 3));
+    print_file_from_args();
 }
 
 /**
 * This function reads the lines.txt file in the root of the project and prints it.
 * Toying around with it is a good practice for Iterators in Rust.
 **/
-fn read_file_example() -> () {
+fn read_file_example() {
     if let Ok(file) = std::fs::read_to_string("lines.txt") {
         file
             .lines()
             .enumerate()
-            .filter(| (idx, _) | idx % 2 == 0)
+            .filter(|(idx, _)| idx % 2 == 0)
             .skip(2)
             .take(2)
-            .for_each(| (_, x) | println!("{}", x));
+            .for_each(|(_, x)| println!("{}", x));
     }
 }
 
@@ -50,4 +49,26 @@ fn multiply(value: Option<usize>) -> Option<usize> {
 
 fn practice(nums: Vec<usize>, index: usize) -> usize {
     return nums.get(index).unwrap_or(&index) * 5;
+}
+
+fn print_file_from_args() {
+    if std::env::args().nth(1).and_then(print_file_by_name).is_none() {
+        println!("File not found!");
+    }
+}
+
+fn print_file_by_name(file_name: String) -> Option<()> {
+    match std::fs::read_to_string(file_name) {
+        Ok(file) => { 
+            file.lines().for_each(|line| {
+                if let Ok(value) = line.parse::<usize>() {
+                    println!("{}", value);
+                } else {
+                    println!("Line not a number");
+                }
+            }); 
+            return Some(()) 
+        },
+        Err(_) => { return None },
+    }
 }

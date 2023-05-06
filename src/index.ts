@@ -1,11 +1,10 @@
 const fs = require('fs');
 
-console.log(practice([1, 2, 3], 1));
-console.log(practice([1, 2, 3], 3));
+printLinesOfFileFromArguments()
 
 function printLinesOfFile(): void {
 	let filePath = process.cwd();
-	filePath = filePath + '/lines.txt';
+	filePath = 'lines.txt';
 	fs.readFileSync(filePath).toString().split('\n').forEach((line: string) => console.log(line));
 }
 
@@ -18,4 +17,12 @@ function multiply(value: number | undefined): number | undefined {
 
 function practice(nums: number[], index: number): number {
 	return (nums[index] ?? index) * 5;
+}
+
+function printLinesOfFileFromArguments(): void {
+	const filePath = process.argv[2];
+	if (!filePath) {
+		throw new Error("File path not provided as a parameter");
+	}
+	fs.readFileSync(filePath).toString().split('\n').forEach((line: string) => console.log(line));
 }
